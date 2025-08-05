@@ -24,3 +24,20 @@ def fibonacci(limit):
 
 for x in fibonacci(100):
     print(x)
+
+print("odd numbers")
+def oddNumbers(limit):
+    a = 1
+
+    while a < limit:
+        yield a
+        a = a + 2
+
+for x in oddNumbers(20):
+    print(x)
+
+limit = 20
+
+print("even numbers")
+for x in range(0, limit + 1, 2):
+    print(x)
