@@ -9,8 +9,6 @@ class book:
         if self.available:
             self.available = False
             print(f"The book {self.title} has been sold for {self.price} dollars")
-        else:
-            print(f"The book {self.title} is no longer under our possession")
 
 class user:
     def __init__(self, name, cash):
@@ -23,10 +21,10 @@ class user:
             book.sell()
             self.cash = self.cash - book.price
             self.bought_books.append(book)
-        elif self.cash < book.price:
-            print(f"You do not have enough money to buy {book.title}")
         elif not book.available:
             print(f"The book {book.title} is no longer available")
+        elif self.cash < book.price:
+            print(f"You do not have enough money to buy {book.title}")
 
     def myBooks(self):
         if not self.bought_books:
@@ -88,6 +86,8 @@ user1.buy(book4)
 user1.myBooks()
 book_shop.show_books_available()
 book_shop.show_books_sold()
+
+user1.buy(book1)
 
 
 
