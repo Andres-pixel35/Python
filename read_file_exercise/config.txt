@@ -1,0 +1,4 @@
+school name=Riverside High School
+max students=1000
+passing grade=70
+semester=Fall 2024
