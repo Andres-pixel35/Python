@@ -1,4 +1,4 @@
-school name=Riverside High School
-max students=1000
-passing grade=70
+school_name=Riverside High School
+max_students=1000
+passing_grade=70
 semester=Fall 2024
