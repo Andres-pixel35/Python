@@ -2,13 +2,13 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 class Book:
-    def __init__(self, title, author, ISBN, genre, year: int):
+    def __init__(self, title, author, ISBN, genre, year: int, available = True):
         self.title = title
         self.author = author
         self.isbn = ISBN
         self.year = year
         self.genre = genre
-        self.available = True
+        self.available = available
         self.borrower = ""
         self.borrow_date = ""
         self.deadline = ""
@@ -43,10 +43,10 @@ class Book:
         if self.available:
             return f"{self.title} by {self.author}"
         else:
-            return f"{self.title} by {self.author} borrowed at {self.borrow_date}. It has to be returned by {self.deadline}"
+            return f"{self.title} by {self.author} was borrowed at {self.borrow_date} by {self.borrower}. It has to be returned by {self.deadline}"
     
 class User:
-    def __init__(self, name, surname, email, register_date, user_id):
+    def __init__(self, name, surname, email, register_date, user_id,):
         self.name = name
         self.surname = surname
         self.email = email
@@ -57,8 +57,8 @@ class User:
     def borrow_book(self, book):
         if not book.available:
             return f"The book '{book.title}' is not available"
-        elif len(self.books) >= 3:
-            return "You cannot borrow more than 3 books at the same time"
+        elif len(self.books) >= 10:
+            return "You cannot borrow more than 10 books at the same time"
     
         book.borrow()
         book.borrower = self
@@ -138,3 +138,6 @@ class Library:
                 return True
             
         print(f"The book {title} has not been found.")
+    
+    def __str__(self):
+        return f"{self.name.capitalize()}"
