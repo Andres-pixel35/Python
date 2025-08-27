@@ -3,43 +3,64 @@ import random
 from helpers import files, classess
 import sys
 
-
 # exit values: 1: File error, 2: input error
+# files names:
+initial_inventory = "initial_inventory.csv"
+inventory = "inventory.csv"
+users_csv = "users.csv"
+
+library = classess.Library("Cosmos Library")
 
 first_time = ""
-if files.is_file_empty("users.csv"):
+if files.is_file_empty(inventory):
     first_time = True
 else:
     first_time = False
 
-today = date.today()
-
-library = classess.Library("Cosmos Library")
-list_users = []
 if not first_time:
     try:
-        dic_users = files.load_users("users.csv")
+        dic_users = files.load_information(users_csv)
+        dic_books = files.load_information(inventory)
     except OSError as e:
        print(f"Operating system error occurred: {str(e)}")
        sys.exit(1)
 
     list_users = [classess.User(**user_data) for user_data in dic_users]
+    list_books = [classess.Book(**book_data) for book_data in dic_books]
 
     for user in list_users:
         library.add_user(user)
+    
+    for book in list_books:
+        library.add_books(book)
+else:
+    try:
+        dic_books = files.load_information(initial_inventory)
+    except OSError as e:
+        print(f"Operating system error occurred: {str(e)}")
+        sys.exit(1)
 
-    library.list_current_users()
+    list_books = [classess.Book(**book_data) for book_data in dic_books]
 
-options = {1: "Register", 2: "Donate a book", 3: "Search a book", 4: "Search an user", 5: "Borrow a book", 6: "Return a book", 7: "exit"}
+    try:
+        for book in list_books:
+            files.add_book_csv(inventory, book, first_time)
+            first_time = False
+    except OSError as e:
+        print(f"Operating system error occurred: {str(e)}")
+        sys.exit(1)
+
+
+options = {1: "Register", 2: "Donate a book", 3: "Search a book", 4: "Search an user", 5: "Borrow a book", 6: "Return a book", 7: "Exit"}
 
 print(f"=== Welcome to {library} ===")
 print("\nThings you can do here: ")
-for i in range(1,7):
+for i in range(1,8):
     print(f"{i}: {options[i]}")
 
 option = 0
 while not option == 7:
-    option = input("Please choose your option: ")
+    option = input("\nPlease choose your option: ")
 
     try:
         option = int(option)
@@ -47,10 +68,11 @@ while not option == 7:
         print(f"Error: {str(e)}")
         sys.exit(2)
 
-
     match option:
         case 1: 
+            first_user = files.is_file_empty(users_csv)
             id_random = f"{random.randint(0, 999):03d}"
+            today = date.today()
 
             register_user = ["Name", "Surname", "Email"]
             values_user = []
@@ -58,36 +80,46 @@ while not option == 7:
             for register in register_user:
                 values_user.append(input(f"{register}: "))
 
-            user = classess.User(values_user[0].capitalize(), values_user[1].capitalize(), values_user[2], today, id_random)
+            user = classess.User(values_user[0].title(), values_user[1].title(), values_user[2].lower(), today, id_random)
 
             library.add_user(user)
-            library.list_current_users()
 
-            files.add_user_csv("users.csv", user, first_time)
+            try:
+                files.add_user_csv(users_csv, user, first_user)
+            except OSError as e:
+                print(f"Operating system error occurred: {str(e)}")
+                sys.exit(1)
 
-book1 = classess.Book("Kusuriya", "Andres", "123-456-789", "Cinema", 2011)
+            print(f"The user {user.name + " " + user.surname} has been registered successfully.")
 
-usuario = files.search_by_name(list_users, "Castro")
+        case 2:
+            donate_book = ["Title", "Author", "ISBN", "Genre", "Year (e.g 2010)"]
+            values_book = []
+            for donate in donate_book:
+                values_book.append(input(f"{donate}: "))
 
-print(usuario.borrow_book(book1))
+            try:
+                values_book[-1] = int(values_book[-1])
+            except ValueError:
+                print(f"You must enter an int for the year of the book. You entered \"{values_book[-1]}\"")
+                sys.exit(2)
+            
+            book = classess.Book(values_book[0].title(), values_book[1].title(), values_book[2], values_book[3].title(), values_book[4])
 
-usuario.list_borrowed_books()
+            library.add_books(book)
 
-print(usuario.borrow_book(book1))
+            try:
+                files.add_book_csv(inventory, book, first_time)
+            except OSError as e:
+                print(f"Operating system error occurred: {str(e)}")
+                sys.exit(1)
+            
+            print(f"The book \"{book.title}\" has been donated successfully.\nFrom {library.name} we thank you enormously")
+
+        case 3:
+            title = input("Please enter the name of the book you want to search: ")
+            library.search_book(title)
 
 
-"""
-id_random = f"{random.randint(0, 999):03d}"
+                
 
-register_user = ["Name", "Surname", "Email"]
-values_user = []
-
-for register in register_user:
-    values_user.append(input(f"{register}: "))
-
-user1 = classess.User(values_user[0].capitalize(), values_user[1].capitalize(), values_user[2], today, id_random)
-
-library.add_user(user1)
-library.list_current_users()
-
-files.add_user_csv("users.csv", user1, first_time)"""
