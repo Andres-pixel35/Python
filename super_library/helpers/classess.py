@@ -33,12 +33,6 @@ class Book:
         else:
             return False
         
-    def check_availability(self):
-        if self.available:
-            return "Available"
-        else:
-            return "Not available"
-        
     def __str__(self):
         if self.available:
             return f"\"{self.title}\" by {self.author}, release date: {self.year}"
@@ -134,8 +128,8 @@ class Library:
                 print(book)
                 return book
             
-        print(f"The book \"{title}\" has not been found. It is not part of our catalog.")
-        return False
+        print(f"The book \"{title.title()}\" has not been found. It is not part of our catalog.")
+        return None
     
     def __str__(self):
         return f"{self.name.capitalize()}"

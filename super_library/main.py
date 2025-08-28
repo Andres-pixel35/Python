@@ -133,7 +133,7 @@ while not option == 9:
             library.search_book(title)
 
         case 4:
-            name = input("Please enter the name and the surname of the user you want to search and know their current books: ")
+            name = input("Please enter the name and the surname of the user you want to know their current books: ")
 
             user = library.search_users(name)
             if not user == None:
@@ -144,7 +144,7 @@ while not option == 9:
             user = library.search_users(name)
             if user == None:
                 print(f"The user called {name.title()} is not registered in our library."
-                      " Do you want to register now?: ", end="")
+                      " Do you want to register it now?: ", end="")
                 choose = input("(y/n) ")
                 match choose.lower():
                     case "y":
@@ -178,7 +178,7 @@ while not option == 9:
             user = library.search_users(name)
             if user == None:
                 print(f"The user called {name.title()} is not registered in our library."
-                      " Do you want to register now?: ", end="")
+                      " Do you want to register it now?: ", end="")
                 choose = input("(y/n) ")
                 match choose.lower():
                     case "y":
@@ -217,6 +217,7 @@ while not option == 9:
             library.list_borrowed_books()
         
         case 9:
+            print("Closing system.")
             continue
 
         case _:
