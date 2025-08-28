@@ -4,7 +4,7 @@ import os
 def add_user_csv(filename, user, firs_user):
     desired_fields = {k: v for k, v in vars(user).items() if k != "books"}
     user_data = {field: getattr(user, field) for field in desired_fields}
-    with open(filename, mode="a", encoding="utf-8", newline="") as file:
+    with open(filename, mode="a", encoding="utf-8", newline="\n") as file:
         fieldnames = desired_fields.keys()
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         if firs_user:

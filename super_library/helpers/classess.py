@@ -56,7 +56,7 @@ class User:
 
     def borrow_book(self, book):
         if not book.available:
-            return f"The book \"{book.title}\" is not available"
+            return f"The book \"{book.title}\" is not available. It's currently under {book.borrower}'s possession.\nDetails: {book}"
         elif len(self.books) == 10:
             return "You cannot borrow more than 10 books at the same time"
     
@@ -66,7 +66,6 @@ class User:
         self.books.append(book)
         return f"The user {self.name} has borrowed the book \"{book.title}\". It has to be returned by {book.deadline}"
 
-    
     def return_book(self, book):
         try:
             self.books.remove(book)
@@ -110,7 +109,7 @@ class Library:
             if name.lower() == user.name.lower() + " " + user.surname.lower():
                 return user
             
-        print(f"The user {name} has not been found.")
+        print(f"The user {name.title()} has not been found.")
         return None
     
     def list_available_books(self):
@@ -122,21 +121,18 @@ class Library:
                     print(book)
 
     def list_borrowed_books(self):
-        if not any(not book.availble for book in self.books):
+        if not any(not book.available for book in self.books):
             print(f"The {self.name} currently has no books lent.")
         else:
             for book in self.books:
-                if not book.avalibale:
+                if not book.available:
                     print(book)
 
     def search_book(self, title):
         for book in self.books:
             if title.lower() == book.title.lower():
-                if not book.available:
-                    print(f"{book.borrower} currently has the book.\n Details: {book}")
-                else:
-                    print(book)
-                return True
+                print(book)
+                return book
             
         print(f"The book \"{title}\" has not been found. It is not part of our catalog.")
         return False
