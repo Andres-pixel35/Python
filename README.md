@@ -1,5 +1,5 @@
 # Python
-Even though I made the 'anime searcher' project for CS50 where I used Python, I was still lacking some fundaments. That's what I want to improve here.
+Even though I made the 'AniVault' project for CS50 where I used Python, I was still lacking some fundaments. That's what I want to improve here.
 
 ## What can you expect to find here?
 
